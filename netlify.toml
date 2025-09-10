@@ -1,6 +1,7 @@
 [build]
-  functions = "netlify/functions"   # This tells Netlify where your functions live
-  publish = "build"                 # This tells Netlify to deploy your React build folder
+  command = "npm run build"
+  publish = "build"
 
 [functions]
-  node_bundler = "esbuild"          # Helps Netlify bundle your functions correctly
+  directory = "functions"
+  node_bundler = "esbuild"
