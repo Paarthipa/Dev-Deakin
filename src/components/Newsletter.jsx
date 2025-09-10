@@ -1,8 +1,6 @@
 import { useState } from "react";
 import "./Newsletter.css";
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:3001";
-
 export default function Newsletter() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
@@ -11,14 +9,18 @@ export default function Newsletter() {
   const handleSubscribe = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${API_BASE}/subscribe`, {
+      const res = await fetch("/.netlify/functions/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email }),
       });
       const ok = res.ok;
       setSubscribed(true);
-      setStatus(ok ? "Subscription successful. Check your inbox." : "Subscription failed. Try again.");
+      setStatus(
+        ok
+          ? "Subscription successful. Check your inbox."
+          : "Subscription failed. Try again."
+      );
       setEmail("");
     } catch {
       setSubscribed(true);
@@ -40,7 +42,9 @@ export default function Newsletter() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <button type="submit" className="newsletter-button">Subscribe</button>
+            <button type="submit" className="newsletter-button">
+              Subscribe
+            </button>
           </form>
         </>
       ) : (
