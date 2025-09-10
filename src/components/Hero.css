@@ -1,0 +1,12 @@
+.hero { 
+    max-width:1120px; 
+    margin:24px auto;
+}
+.hero img { 
+    width:100%; 
+    border:1px solid #e9eef3; 
+    border-radius:14px; 
+    display:block;
+    display: flex;
+    justify-content: center;
+}

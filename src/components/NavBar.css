@@ -1,0 +1,78 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #d3d3d3;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-left,
+.navbar-center {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.navbar-center {
+  margin: 0 auto;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* spacing between elements */
+}
+
+.search-bar {
+  padding: 12px 18px;
+  border-radius: 30px;       /* smoother, more curved */
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 16px;
+  width: 320px;              /* bigger width */
+  height: 45px;              /* taller input */
+  transition: all 0.3s ease;
+}
+
+.search-bar:focus {
+  border-color: #007bff;  
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
+}
+
+.nav-btn {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.nav-btn.post {
+  background-color: white;
+  color: black;
+}
+
+.nav-btn.post:hover {
+  background-color: #f1f1f1;
+}
+
+.nav-btn.signout {
+  background-color: #e74c3c;
+  color: white;
+  white-space: nowrap; /* keep text in one line */
+  padding: 8px 20px;   /* add horizontal space */
+  min-width: 90px;     /* ensure button is wide enough */
+  text-align: center;  /* center the text */
+  border-radius: 20px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.nav-btn.signout:hover {
+  background-color: #c0392b;
+}
