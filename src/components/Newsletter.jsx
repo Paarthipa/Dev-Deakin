@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./Newsletter.css";
 
-// Detect environment: local (netlify dev) vs production
 const API_BASE =
   process.env.NODE_ENV === "production"
     ? "/.netlify/functions"
