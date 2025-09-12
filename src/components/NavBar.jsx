@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import "./NavBar.css";
@@ -8,37 +8,55 @@ export default function NavBar() {
   const navigate = useNavigate();
   const auth = getAuth();
 
-  // Sign out handler
+  const [query, setQuery] = useState("");
+
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        navigate("/login"); // redirect after sign out
+        navigate("/login");
       })
       .catch((error) => {
         console.error("Error signing out:", error);
       });
   };
 
-  // Show only center logo on login/signup pages
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (query.trim()) {
+      navigate(`/findquestions?search=${encodeURIComponent(query)}`);
+    }
+  };
+
   if (location.pathname === "/login" || location.pathname === "/signup") {
     return (
       <div className="navbar">
-        <div className="navbar-center">DEV@Deakin</div>
+        <div className="navbar-center logo">DEV@Deakin</div>
       </div>
     );
   }
 
-  // Show full navbar when logged in
   return (
     <div className="navbar">
-      <div className="navbar-left">DEV@Deakin</div>
+      <div className="navbar-left logo" onClick={() => navigate("/home")}>
+        DEV@Deakin
+      </div>
+
+      <div className="navbar-center">
+        <form className="search-container" onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search..."
+            className="search-input"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <button type="submit" className="search-btn">
+            <i className="fas fa-search"></i>
+          </button>
+        </form>
+      </div>
 
       <div className="navbar-right">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="search-input"
-        />
         <button className="nav-btn post" onClick={() => navigate("/newpost")}>
           Post
         </button>
