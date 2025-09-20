@@ -5,8 +5,8 @@
 [functions]
   node_bundler = "esbuild"
 
+# React Router Fix
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
