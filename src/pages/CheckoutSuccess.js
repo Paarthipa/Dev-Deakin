@@ -1,26 +1,41 @@
-// pages/CheckoutSuccess.jsx
-import { useEffect, useState } from "react";
+// CheckoutSuccess.js
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
 import "../styles/CheckoutSuccess.css";
 
 export default function CheckoutSuccess() {
-  const [done, setDone] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Minimal demo: mark as premium
-    localStorage.setItem("devd_premium", "true");
-    setDone(true);
-  }, []);
+    const user = auth.currentUser;
+
+    if (user) {
+      // ✅ mark Firestore user as premium
+      const userRef = doc(db, "users", user.uid);
+      setDoc(userRef, { premium: true }, { merge: true })
+        .then(() => {
+          console.log("User upgraded to Premium in Firestore ✅");
+        })
+        .catch((err) => {
+          console.error("Error updating premium status:", err);
+        });
+    }
+
+    // redirect after 2s
+    const timer = setTimeout(() => {
+      navigate("/home");
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
 
   return (
     <div className="checkout-success">
       <h1>Payment successful 🎉</h1>
-      {done && <p>Your premium features are now unlocked.</p>}
-      <button
-        className="btn"
-        onClick={() => (window.location.href = "/home")}
-      >
-        Go to Home
-      </button>
+      <p>Your premium features are now unlocked.</p>
+      <p>Redirecting you back...</p>
     </div>
   );
 }

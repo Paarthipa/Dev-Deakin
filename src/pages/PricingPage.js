@@ -1,24 +1,12 @@
-// pages/PricingPage.jsx
-import { loadStripe } from "@stripe/stripe-js";
-import "../styles/PricingPage.css";
-
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
-
-export default function PricingPage() {
-  const startPremium = async () => {
-    const res = await fetch("/.netlify/functions/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan: "premium_monthly" }),
-    });
-    const { sessionId, error } = await res.json();
-    if (error) {
-      alert(error);
-      return;
-    }
-    const stripe = await stripePromise;
-    await stripe.redirectToCheckout({ sessionId });
-  };
+export default function PricingPage({ isPremium }) {
+  if (isPremium) {
+    return (
+      <div className="already-premium">
+        <h2>🎉 You already have Premium!</h2>
+        <p>Enjoy your exclusive features.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="pricing-page">
@@ -46,4 +34,13 @@ export default function PricingPage() {
       </div>
     </div>
   );
+}
+
+async function startPremium() {
+  // Example: Call backend to create Stripe session
+  const res = await fetch("/create-checkout-session", { method: "POST" });
+  const { id } = await res.json();
+
+  const stripe = await window.Stripe(process.env.REACT_APP_STRIPE_KEY);
+  stripe.redirectToCheckout({ sessionId: id });
 }

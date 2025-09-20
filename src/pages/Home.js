@@ -5,7 +5,7 @@ import { ArticleGrid, TutorialGrid } from "../components/Grid";
 import Footer from "../components/Footer";
 import Newsletter from "../components/Newsletter";
 
-export default function Home() {
+export default function Home({ isPremium }) {
   return (
     <>
       <main className="container">
@@ -24,6 +24,19 @@ export default function Home() {
         </div>
 
         <Newsletter />
+
+        {/* 🔹 Premium Section */}
+        {isPremium && (
+          <div className="premium-section">
+            <SectionTitle>🌟 Premium Features</SectionTitle>
+            <ul>
+              <li>Custom banners & themes</li>
+              <li>Content controls</li>
+              <li>Analytics dashboard</li>
+              <li>Priority support</li>
+            </ul>
+          </div>
+        )}
       </main>
       <Footer />
     </>

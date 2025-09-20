@@ -1,4 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "./firebase";
+import { doc, onSnapshot } from "firebase/firestore";
+
+
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -9,15 +15,33 @@ import PostEditor from "./pages/PostEditor";
 import CheckoutCancel from "./pages/CheckoutCancel";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import PricingPage from "./pages/PricingPage";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./firebase";
 
 function App() {
   const [user] = useAuthState(auth);
+  const [isPremium, setIsPremium] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+
+      // live listener → instantly reflects changes
+      const unsubscribe = onSnapshot(userRef, (snapshot) => {
+        if (snapshot.exists()) {
+          setIsPremium(snapshot.data().premium || false);
+        } else {
+          setIsPremium(false);
+        }
+      });
+
+      return () => unsubscribe();
+    } else {
+      setIsPremium(false);
+    }
+  }, [user]);
 
   return (
     <Router>
-      <NavBar />
+      <NavBar isPremium={isPremium} />
       <Routes>
         <Route
           path="/"
@@ -25,10 +49,10 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={user ? <Home /> : <Navigate to="/login" replace />} />
+        <Route path="/home" element={user ? <Home isPremium={isPremium} /> : <Navigate to="/login" replace />} />
         <Route path="/newpost" element={user ? <NewPost /> : <Navigate to="/login" replace />} />
         <Route path="/findquestions" element={user ? <FindQuestions /> : <Navigate to="/login" replace />} />
-        <Route path="/plans" element={user ? <PricingPage /> : <Navigate to="/login" replace />} />
+        <Route path="/plans" element={user ? <PricingPage isPremium={isPremium} /> : <Navigate to="/login" replace />} />
         <Route path="/billing/success" element={user ? <CheckoutSuccess /> : <Navigate to="/login" replace />} />
         <Route path="/billing/cancel" element={user ? <CheckoutCancel /> : <Navigate to="/login" replace />} />
         <Route path="/posteditor" element={user ? <PostEditor /> : <Navigate to="/login" replace />} />
