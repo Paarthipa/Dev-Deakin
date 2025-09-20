@@ -34,7 +34,7 @@ export default function PostEditor() {
           <CodeMirror
             value={code}
             height="300px"
-            extensions={[javascript(), css()]}
+            extensions={[javascript(), css(), markdown()]}
             onChange={(value) => setCode(value)}
           />
         </div>
