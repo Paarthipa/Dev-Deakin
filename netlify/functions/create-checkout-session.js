@@ -1,41 +1,43 @@
-// netlify/functions/create-checkout-session.js
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-export const handler = async (event) => {
+export async function handler(event) {
   try {
-    if (event.httpMethod !== "POST") {
-      return { statusCode: 405, body: "Method Not Allowed" };
-    }
+    const { plan } = JSON.parse(event.body);
 
-    const { plan } = JSON.parse(event.body || "{}");
-    if (plan !== "premium_monthly") {
-      return { statusCode: 400, body: JSON.stringify({ error: "Invalid plan" }) };
-    }
-
+    // For now, we always use the Premium Monthly price ID from env
     const priceId = process.env.PRICE_ID_PREMIUM_MONTHLY;
-    const origin = process.env.SITE_URL || "http://localhost:8888";
 
+    // Create a customer first (you could attach user email from your auth later)
+    const customer = await stripe.customers.create({
+      description: "Dev@Deakin Premium customer",
+    });
+
+    // Create a Checkout session for subscription
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
-      line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${origin}/billing/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/billing/cancel`,
-      // (Optional) collect email to map customer later:
-      customer_creation: "always",
-      billing_address_collection: "auto",
-      allow_promotion_codes: true
+      payment_method_types: ["card"],
+      customer: customer.id, // ✅ attach customer here
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      success_url: `${process.env.SITE_URL}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.SITE_URL}/checkout-cancel`,
     });
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ sessionId: session.id })
+      body: JSON.stringify({ sessionId: session.id }),
     };
   } catch (err) {
+    console.error("Stripe error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message })
+      body: JSON.stringify({ error: err.message }),
     };
   }
-};
+}
