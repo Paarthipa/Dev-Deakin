@@ -1,24 +1,49 @@
-<div className="pricing-page">
-  <h1>Choose your plan</h1>
-  <div className="pricing-cards">
-    <div className="pricing-card free">
-      <h2>Free</h2>
-      <ul>
-        <li>Read posts</li>
-        <li>Basic profile</li>
-      </ul>
-      <button disabled>Current</button>
-    </div>
+// pages/PricingPage.jsx
+import { loadStripe } from "@stripe/stripe-js";
+import "../styles/PricingPage.css";
 
-    <div className="pricing-card premium">
-      <h2>Premium</h2>
-      <ul>
-        <li>Custom banners & themes</li>
-        <li>Content controls</li>
-        <li>Analytics dashboard</li>
-        <li>Priority support</li>
-      </ul>
-      <button onClick={startPremium}>Go Premium</button>
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+
+export default function PricingPage() {
+  const startPremium = async () => {
+    const res = await fetch("/.netlify/functions/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plan: "premium_monthly" }),
+    });
+    const { sessionId, error } = await res.json();
+    if (error) {
+      alert(error);
+      return;
+    }
+    const stripe = await stripePromise;
+    await stripe.redirectToCheckout({ sessionId });
+  };
+
+  return (
+    <div className="pricing-page">
+      <h1>Choose your plan</h1>
+      <div className="pricing-cards">
+        <div className="pricing-card free">
+          <h2>Free</h2>
+          <ul>
+            <li>Read posts</li>
+            <li>Basic profile</li>
+          </ul>
+          <button disabled>Current</button>
+        </div>
+
+        <div className="pricing-card premium">
+          <h2>Premium</h2>
+          <ul>
+            <li>Custom banners & themes</li>
+            <li>Content controls</li>
+            <li>Analytics dashboard</li>
+            <li>Priority support</li>
+          </ul>
+          <button onClick={startPremium}>Go Premium</button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  );
+}
