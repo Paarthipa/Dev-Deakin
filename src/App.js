@@ -5,6 +5,10 @@ import Signup from "./pages/Signup";
 import NewPost from "./pages/NewPost";
 import FindQuestions from "./pages/FindQuestions";
 import NavBar from "./components/NavBar";
+import PostEditor from "./pages/PostEditor";
+import CheckoutCancel from "./pages/CheckoutCancel";
+import CheckoutSuccess from "./pages/CheckoutSuccess";
+import PricingPage from "./pages/PricingPage";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
 
@@ -15,19 +19,20 @@ function App() {
     <Router>
       <NavBar />
       <Routes>
-        {/* Redirect default route "/" to login if not logged in, else to home */}
         <Route
           path="/"
           element={user ? <Navigate to="/home" replace /> : <Navigate to="/login" replace />}
         />
-
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-
-        {/* Protected routes */}
         <Route path="/home" element={user ? <Home /> : <Navigate to="/login" replace />} />
         <Route path="/newpost" element={user ? <NewPost /> : <Navigate to="/login" replace />} />
         <Route path="/findquestions" element={user ? <FindQuestions /> : <Navigate to="/login" replace />} />
+        <Route path="/plans" element={user ? <PricingPage /> : <Navigate to="/login" replace />} />
+        <Route path="/billing/success" element={user ? <CheckoutSuccess /> : <Navigate to="/login" replace />} />
+        <Route path="/billing/cancel" element={user ? <CheckoutCancel /> : <Navigate to="/login" replace />} />
+        <Route path="/posteditor" element={user ? <PostEditor /> : <Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

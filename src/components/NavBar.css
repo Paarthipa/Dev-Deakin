@@ -29,8 +29,8 @@
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 12px; /* increased spacing between buttons */
-  margin-right: 15px; /* pushes buttons a little left */
+  gap: 12px; /* spacing between buttons */
+  margin-right: 15px;
 }
 
 .search-container {
@@ -81,6 +81,7 @@
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
+/* Post button */
 .nav-btn.post {
   background: #444;
   color: #fff;
@@ -91,6 +92,7 @@
   transform: scale(1.05);
 }
 
+/* Sign out button */
 .nav-btn.signout {
   background: #e74c3c;
   color: #fff;
@@ -101,8 +103,30 @@
   transform: scale(1.05);
 }
 
+/* New: Plans button */
+.nav-btn.plans {
+  background: #3498db;
+  color: #fff;
+}
+
+.nav-btn.plans:hover {
+  background: #2980b9;
+  transform: scale(1.05);
+}
+
+/* New: Premium badge */
+.premium-badge {
+  background: gold;
+  color: #222;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  border: 1px solid #caa500;
+}
+  
 body {
   margin: 0;
-  padding-top: 70px;
+  padding-top: 70px; /* pushes page below navbar */
   font-family: Arial, sans-serif;
 }
