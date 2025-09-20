@@ -4,7 +4,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "./firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
-
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -24,7 +23,7 @@ function App() {
     if (user) {
       const userRef = doc(db, "users", user.uid);
 
-      // live listener → instantly reflects changes
+      // 🔹 Real-time listener for premium status
       const unsubscribe = onSnapshot(userRef, (snapshot) => {
         if (snapshot.exists()) {
           setIsPremium(snapshot.data().premium || false);
@@ -43,19 +42,43 @@ function App() {
     <Router>
       <NavBar isPremium={isPremium} />
       <Routes>
+        {/* Root redirect */}
         <Route
           path="/"
           element={user ? <Navigate to="/home" replace /> : <Navigate to="/login" replace />}
         />
+
+        {/* Auth routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={user ? <Home isPremium={isPremium} /> : <Navigate to="/login" replace />} />
-        <Route path="/newpost" element={user ? <NewPost /> : <Navigate to="/login" replace />} />
-        <Route path="/findquestions" element={user ? <FindQuestions /> : <Navigate to="/login" replace />} />
-        <Route path="/plans" element={user ? <PricingPage isPremium={isPremium} /> : <Navigate to="/login" replace />} />
-        <Route path="/billing/success" element={user ? <CheckoutSuccess /> : <Navigate to="/login" replace />} />
-        <Route path="/billing/cancel" element={user ? <CheckoutCancel /> : <Navigate to="/login" replace />} />
-        <Route path="/posteditor" element={user ? <PostEditor /> : <Navigate to="/login" replace />} />
+
+        {/* Protected routes */}
+        <Route
+          path="/home"
+          element={user ? <Home isPremium={isPremium} /> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/newpost"
+          element={user ? <NewPost /> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/findquestions"
+          element={user ? <FindQuestions /> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/plans"
+          element={user ? <PricingPage isPremium={isPremium} /> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/posteditor"
+          element={user ? <PostEditor /> : <Navigate to="/login" replace />}
+        />
+
+        {/* Billing routes (⚡ always accessible so Stripe redirect works) */}
+        <Route path="/billing/success" element={<CheckoutSuccess />} />
+        <Route path="/billing/cancel" element={<CheckoutCancel />} />
+
+        {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

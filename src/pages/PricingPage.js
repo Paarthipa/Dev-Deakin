@@ -1,4 +1,5 @@
 import "../styles/PricingPage.css";
+import { loadStripe } from "@stripe/stripe-js"; // ✅ import loadStripe
 
 export default function PricingPage({ isPremium }) {
   if (isPremium) {
@@ -39,10 +40,26 @@ export default function PricingPage({ isPremium }) {
 }
 
 async function startPremium() {
-  // Example: Call backend to create Stripe session
-  const res = await fetch("/create-checkout-session", { method: "POST" });
-  const { id } = await res.json();
+  try {
+    const res = await fetch("/.netlify/functions/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plan: "premium_monthly" }), // must match exactly
+    });
 
-  const stripe = await window.Stripe(process.env.REACT_APP_STRIPE_KEY);
-  stripe.redirectToCheckout({ sessionId: id });
+    const data = await res.json(); // parse JSON properly
+
+    if (!res.ok) {
+      console.error("Server error:", data);
+      alert("❌ Failed to start checkout: " + (data.error || "Unknown error"));
+      return;
+    }
+
+    // ✅ Use loadStripe
+    const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+    await stripe.redirectToCheckout({ sessionId: data.id });
+  } catch (err) {
+    console.error("❌ Checkout error:", err);
+    alert("Something went wrong. Check console.");
+  }
 }

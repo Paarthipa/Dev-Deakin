@@ -19,15 +19,21 @@ export default function Signup() {
       setError("Passwords do not match");
       return;
     }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+
+      // ✅ Create Firestore doc with premium: false
       await setDoc(doc(db, "users", user.uid), {
         name,
-        email
+        email,
+        premium: false,   // default until Stripe checkout updates it
       });
+
       navigate("/");
     } catch (err) {
+      console.error("Signup error:", err);
       setError("Failed to register");
     }
   };
@@ -36,10 +42,34 @@ export default function Signup() {
     <div className="auth-container">
       <h2>Create Account</h2>
       <form onSubmit={handleSignup}>
-        <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <input type="password" placeholder="Confirm password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
+        <input 
+          type="text" 
+          placeholder="Name" 
+          value={name} 
+          onChange={(e) => setName(e.target.value)} 
+          required 
+        />
+        <input 
+          type="email" 
+          placeholder="Email" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
+          required 
+        />
+        <input 
+          type="password" 
+          placeholder="Password" 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
+          required 
+        />
+        <input 
+          type="password" 
+          placeholder="Confirm password" 
+          value={confirm} 
+          onChange={(e) => setConfirm(e.target.value)} 
+          required 
+        />
         <button type="submit">Create</button>
       </form>
       {error && <p className="error">{error}</p>}
