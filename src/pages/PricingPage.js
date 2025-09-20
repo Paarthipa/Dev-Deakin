@@ -1,3 +1,5 @@
+import "../styles/PricingPage.css";
+
 export default function PricingPage({ isPremium }) {
   if (isPremium) {
     return (
