@@ -6,19 +6,21 @@ export async function handler(event) {
   try {
     const { plan } = JSON.parse(event.body);
 
-    // For now, we always use the Premium Monthly price ID from env
-    const priceId = process.env.PRICE_ID_PREMIUM_MONTHLY;
+    // Match the plan with the Stripe Price ID
+    let priceId;
+    if (plan === "premium_monthly") {
+      priceId = process.env.PRICE_ID_PREMIUM_MONTHLY; // set this in Netlify env
+    } else {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: "Invalid plan selected" }),
+      };
+    }
 
-    // Create a customer first (you could attach user email from your auth later)
-    const customer = await stripe.customers.create({
-      description: "Dev@Deakin Premium customer",
-    });
-
-    // Create a Checkout session for subscription
+    // ✅ Create a subscription checkout session
     const session = await stripe.checkout.sessions.create({
-      mode: "subscription",
-      payment_method_types: ["card"],
-      customer: customer.id, // ✅ attach customer here
+      mode: "subscription",            // 👈 this is what you need for recurring plans
+      payment_method_types: ["card"],  // allow card payments
       line_items: [
         {
           price: priceId,
@@ -34,7 +36,7 @@ export async function handler(event) {
       body: JSON.stringify({ sessionId: session.id }),
     };
   } catch (err) {
-    console.error("Stripe error:", err);
+    console.error("Stripe error:", err.message);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: err.message }),

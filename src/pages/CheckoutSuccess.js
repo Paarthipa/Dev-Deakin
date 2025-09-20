@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import "../styles/CheckoutSuccess.css";
 
-
 export default function CheckoutSuccess() {
   const [done, setDone] = useState(false);
 
@@ -13,9 +12,15 @@ export default function CheckoutSuccess() {
   }, []);
 
   return (
-    <div>
+    <div className="checkout-success">
       <h1>Payment successful 🎉</h1>
       {done && <p>Your premium features are now unlocked.</p>}
+      <button
+        className="btn"
+        onClick={() => (window.location.href = "/home")}
+      >
+        Go to Home
+      </button>
     </div>
   );
 }
