@@ -4,7 +4,6 @@ import SectionTitle from "../components/SectionTitle";
 import { ArticleGrid, TutorialGrid } from "../components/Grid";
 import Footer from "../components/Footer";
 import Newsletter from "../components/Newsletter";
-import { Link } from "react-router-dom"; // ✅ Import Link for navigation
 
 export default function Home({ isPremium }) {
   return (

@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";   // removed unused useEffect
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import "./NavBar.css";
 
-export default function NavBar({ isPremium }) {
+export default function NavBar() {
   const location = useLocation();
   const navigate = useNavigate();
   const auth = getAuth();
 
   const [query, setQuery] = useState("");
+  const [isPremium, setIsPremium] = useState(false);
 
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        localStorage.removeItem("devd_premium"); // clear premium flag
+        localStorage.removeItem("devd_premium");
         navigate("/login");
       })
       .catch((error) => {
@@ -28,7 +29,6 @@ export default function NavBar({ isPremium }) {
     }
   };
 
-  // Hide navbar for login/signup
   if (location.pathname === "/login" || location.pathname === "/signup") {
     return (
       <div className="navbar">
@@ -64,7 +64,10 @@ export default function NavBar({ isPremium }) {
         </button>
 
         {isPremium && (
-          <button className="nav-btn premium" onClick={() => navigate("/premium")}>
+          <button
+            className="nav-btn premium"
+            onClick={() => navigate("/premium-features")}
+          >
             Premium
           </button>
         )}
