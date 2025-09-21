@@ -1,0 +1,22 @@
+.analytics-cards {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 40px;
+}
+
+.analytics-card {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #1f2937;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.analytics-card:hover {
+  transform: scale(1.1);
+  background: #f1f5f9;
+}

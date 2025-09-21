@@ -1,0 +1,31 @@
+.support-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 500px;
+  margin: 30px auto;
+}
+
+.support-form input,
+.support-form textarea {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+}
+
+.support-form button {
+  background: grey;
+  color: white;
+  padding: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.support-form button:hover {
+  background: #1e40af;
+}

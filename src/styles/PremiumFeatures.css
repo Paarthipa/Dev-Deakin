@@ -1,0 +1,33 @@
+.premium-section {
+  margin: 40px 0;
+  text-align: center;
+}
+
+.premium-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.premium-card {
+  background: #f4f4f4;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.premium-card:hover {
+  border-color: gold;
+  background: #fffbea;
+  transform: translateY(-5px);
+}
+
+.premium-card h3 {
+  margin-bottom: 10px;
+  color: #222;
+}

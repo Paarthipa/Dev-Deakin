@@ -1,0 +1,55 @@
+.premium-page {
+  padding: 50px;
+  text-align: center;
+  background: #f9fbff;
+  min-height: 100vh;
+}
+
+.premium-header {
+  font-size: 2rem;
+  color: grey;
+  margin-bottom: 15px;
+}
+
+.premium-desc {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 40px;
+}
+
+.theme-preview {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.theme-card {
+  width: 180px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.theme-card:hover {
+  transform: scale(1.1);
+}
+
+.theme-card.light {
+  background: #e0f2fe;
+  color: #1e3a8a;
+}
+
+.theme-card.dark {
+  background: #1f2937;
+}
+
+.theme-card.custom {
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+}

@@ -3,24 +3,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import "./NavBar.css";
 
-export default function NavBar() {
+export default function NavBar({ isPremium }) {
   const location = useLocation();
   const navigate = useNavigate();
   const auth = getAuth();
 
   const [query, setQuery] = useState("");
-  const [isPremium, setIsPremium] = useState(false);
-
-  // On mount, check if the user has premium
-  useEffect(() => {
-    const premiumFlag = localStorage.getItem("devd_premium") === "true";
-    setIsPremium(premiumFlag);
-  }, []);
 
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        localStorage.removeItem("devd_premium"); // clear premium flag on logout
+        localStorage.removeItem("devd_premium"); // clear premium flag
         navigate("/login");
       })
       .catch((error) => {
@@ -35,7 +28,7 @@ export default function NavBar() {
     }
   };
 
-  // Hide navbar for login/signup pages
+  // Hide navbar for login/signup
   if (location.pathname === "/login" || location.pathname === "/signup") {
     return (
       <div className="navbar">
@@ -66,13 +59,15 @@ export default function NavBar() {
       </div>
 
       <div className="navbar-right">
-        {/* New: Plans navigation */}
         <button className="nav-btn plans" onClick={() => navigate("/plans")}>
           Plans
         </button>
 
-        {/* Show badge if premium */}
-        {isPremium && <span className="premium-badge">Premium ✓</span>}
+        {isPremium && (
+          <button className="nav-btn premium" onClick={() => navigate("/premium")}>
+            Premium
+          </button>
+        )}
 
         <button className="nav-btn post" onClick={() => navigate("/newpost")}>
           Post

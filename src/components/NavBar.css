@@ -29,7 +29,7 @@
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 12px; /* spacing between buttons */
+  gap: 12px;
   margin-right: 15px;
 }
 
@@ -48,7 +48,6 @@
   padding: 8px 12px;
   border: none;
   outline: none;
-  background: transparent;
   font-size: 14px;
 }
 
@@ -57,9 +56,6 @@
   border: none;
   padding: 8px 12px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .search-btn i {
@@ -74,59 +70,61 @@
 .nav-btn {
   padding: 8px 16px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
 }
 
-/* Post button */
-.nav-btn.post {
-  background: #444;
-  color: #fff;
-}
-
-.nav-btn.post:hover {
-  background: #333;
-  transform: scale(1.05);
-}
-
-/* Sign out button */
-.nav-btn.signout {
-  background: #e74c3c;
-  color: #fff;
-}
-
-.nav-btn.signout:hover {
-  background: #c0392b;
-  transform: scale(1.05);
-}
-
-/* New: Plans button */
 .nav-btn.plans {
   background: #3498db;
   color: #fff;
+  box-shadow: 0 3px 8px rgba(52, 152, 219, 0.5);
 }
-
 .nav-btn.plans:hover {
   background: #2980b9;
   transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.7);
 }
 
-/* New: Premium badge */
-.premium-badge {
-  background: gold;
-  color: #222;
-  font-weight: bold;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 13px;
-  border: 1px solid #caa500;
+.nav-btn.premium {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(106, 17, 203, 0.5);
 }
-  
+.nav-btn.premium:hover {
+  background: linear-gradient(135deg, #5a0fb5, #1e63d8);
+  transform: scale(1.05);
+  box-shadow: 0 4px 14px rgba(37, 117, 252, 0.6);
+}
+
+.nav-btn.post {
+  background: #444;
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(68, 68, 68, 0.5);
+}
+.nav-btn.post:hover {
+  background: #333;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(68, 68, 68, 0.7);
+}
+
+.nav-btn.signout {
+  background: #e74c3c;
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(231, 76, 60, 0.5);
+}
+.nav-btn.signout:hover {
+  background: #c0392b;
+  transform: scale(1.05);
+  box-shadow: 0 4px 14px rgba(231, 76, 60, 0.7);
+}
+
 body {
   margin: 0;
-  padding-top: 70px; /* pushes page below navbar */
+  padding-top: 70px;
   font-family: Arial, sans-serif;
 }

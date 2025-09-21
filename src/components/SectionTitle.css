@@ -1,2 +1,28 @@
-.section-title { text-align:center; font-size:1.6rem; font-weight:800; margin:18px 0 14px; letter-spacing:.2px; color:#1f2937; }
-.section-title__rule { width:72px; height:3px; border-radius:999px; background:#1f7ed6; margin:8px auto 0; }
+.section {
+  text-align: center;
+  margin: 40px 0 20px;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #1e2a38;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+/* 🔹 Single underline (gradient bar) */
+.section-title__rule {
+  width: 80px;
+  height: 4px;
+  background: #ccc; /* light grey */
+  margin: 0 auto;
+  border-radius: 4px;
+  transition: width 0.4s ease, background 0.3s ease;
+}
+
+.section:hover .section-title__rule {
+  width: 120px;
+  background: #888; /* darker grey on hover */
+}
+
