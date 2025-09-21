@@ -68,9 +68,9 @@ export default function NavBar({ isPremium }) {
         {isPremium && (
           <button
             className="nav-btn premium"
-            onClick={() => navigate("/themes")}
+            onClick={() => navigate("/premium")}
           >
-            🌟 Premium
+            Premium
           </button>
         )}
 
