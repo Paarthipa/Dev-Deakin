@@ -13,7 +13,7 @@ export default function NavBar({ isPremium }) {
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        localStorage.removeItem("devd_premium"); // clear local flag
+        localStorage.removeItem("devd_premium");
         navigate("/login");
       })
       .catch((error) => {
@@ -28,7 +28,6 @@ export default function NavBar({ isPremium }) {
     }
   };
 
-  // Hide navbar on login/signup pages
   if (location.pathname === "/login" || location.pathname === "/signup") {
     return (
       <div className="navbar">
@@ -59,12 +58,10 @@ export default function NavBar({ isPremium }) {
       </div>
 
       <div className="navbar-right">
-        {/* Plans button (always visible) */}
         <button className="nav-btn plans" onClick={() => navigate("/plans")}>
           Plans
         </button>
 
-        {/* Premium button only if subscribed */}
         {isPremium && (
           <button
             className="nav-btn premium"
@@ -76,6 +73,14 @@ export default function NavBar({ isPremium }) {
 
         <button className="nav-btn post" onClick={() => navigate("/newpost")}>
           Post
+        </button>
+
+        {/* New button for Find Questions */}
+        <button
+          className="nav-btn find-questions"
+          onClick={() => navigate("/findquestions")}
+        >
+          Find Questions
         </button>
 
         <button className="nav-btn signout" onClick={handleSignOut}>

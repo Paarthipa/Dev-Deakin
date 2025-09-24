@@ -51,11 +51,11 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         {/* Main pages */}
-        <Route path="/home" element={user ? <Home isPremium={isPremium} /> : <Navigate to="/login" replace />} />
-        <Route path="/newpost" element={user ? <NewPost /> : <Navigate to="/login" replace />} />
-        <Route path="/findquestions" element={user ? <FindQuestions /> : <Navigate to="/login" replace />} />
-        <Route path="/plans" element={user ? <PricingPage isPremium={isPremium} /> : <Navigate to="/login" replace />} />
-        <Route path="/posteditor" element={user ? <PostEditor /> : <Navigate to="/login" replace />} />
+        <Route path="/home" element={user ? <Home isPremium={isPremium} /> : <Navigate to="/home" replace />} />
+        <Route path="/newpost" element={user ? <NewPost /> : <Navigate to="/newpost" replace />} />
+        <Route path="/findquestions" element={user ? <FindQuestions /> : <Navigate to="/findquestions" replace />} />
+        <Route path="/plans" element={user ? <PricingPage isPremium={isPremium} /> : <Navigate to="/plans" replace />} />
+        <Route path="/posteditor" element={user ? <PostEditor /> : <Navigate to="/posteditor" replace />} />
 
         {/* ✅ Premium routes */}
         <Route path="/premium" element={user && isPremium ? <PremiumFeatures /> : <Navigate to="/plans" replace />} />

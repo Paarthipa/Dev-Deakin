@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
+import "../styles/FindQuestions.css";
 
 function FindQuestions() {
   const [questions, setQuestions] = useState([]);
@@ -21,9 +22,9 @@ function FindQuestions() {
     const fetchData = async () => {
       const querySnapshot = await getDocs(collection(db, "posts"));
       setQuestions(
-        querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+        querySnapshot.docs.map((docSnap) => ({
+          id: docSnap.id,
+          ...docSnap.data(),
         }))
       );
     };
@@ -31,8 +32,10 @@ function FindQuestions() {
   }, []);
 
   const handleDelete = async (id) => {
-    await deleteDoc(doc(db, "posts", id));
-    setQuestions(questions.filter((q) => q.id !== id));
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      await deleteDoc(doc(db, "posts", id));
+      setQuestions(questions.filter((q) => q.id !== id));
+    }
   };
 
   const filterByDate = (createdAt) => {
@@ -58,7 +61,7 @@ function FindQuestions() {
 
   const filtered = questions.filter(
     (q) =>
-      (q.title.toLowerCase().includes(search.toLowerCase()) ||
+      (q.title?.toLowerCase().includes(search.toLowerCase()) ||
         (q.tags &&
           q.tags.join(",").toLowerCase().includes(search.toLowerCase()))) &&
       filterByDate(q.createdAt)
@@ -69,6 +72,14 @@ function FindQuestions() {
       <h2>Find Questions</h2>
 
       <div className="filters">
+        <input
+          type="text"
+          className="search-box"
+          placeholder="Search by title or tag..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
         <select
           value={dateFilter}
           onChange={(e) => setDateFilter(e.target.value)}
@@ -82,7 +93,10 @@ function FindQuestions() {
 
       <div className="question-list">
         {filtered.map((q) => (
-          <div key={q.id} className="question-card">
+          <div
+            key={q.id}
+            className={`question-card ${expanded === q.id ? "expanded" : ""}`}
+          >
             <h3>{q.title}</h3>
             <p>{q.postType === "question" ? q.description : q.abstract}</p>
 
@@ -90,11 +104,7 @@ function FindQuestions() {
               <img
                 src={q.imageURL}
                 alt="uploaded"
-                style={{
-                  maxWidth: "200px",
-                  marginTop: "10px",
-                  borderRadius: "6px",
-                }}
+                className="article-img"
               />
             )}
 
@@ -125,10 +135,14 @@ function FindQuestions() {
               >
                 {expanded === q.id ? "Collapse" : "Expand"}
               </button>
-              <button onClick={() => handleDelete(q.id)}>Delete</button>
+              <button onClick={() => handleDelete(q.id)}>
+                Delete
+              </button>
             </div>
           </div>
         ))}
+
+        {filtered.length === 0 && <p>No posts found.</p>}
       </div>
     </div>
   );
